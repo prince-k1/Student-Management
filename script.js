@@ -7,7 +7,9 @@ axios
 .then((res) => {
     for(let i = 0; i < res.data.length; i++){
         displayOnScreen(res.data[i]);
+        sum++;
     }
+    totalNumber.innerHTML = `All students : ${sum}`
 })
 .catch(err => console.log(err))
 
@@ -25,15 +27,12 @@ form.addEventListener("submit", (e) => {
     
     axios
         .post("https://crudcrud.com/api/f8a3094b48784547acb9d1535d3b794c/studentManager", obj)
-        .then((res) => displayOnScreen(res.data))
+        .then((res) => {
+            displayOnScreen(res.data)
+            
+        })
         .catch(err => console.log(err))
-
-    
-
-    
-
-
-    
+        totalNumber.innerHTML = `All students : ${++sum}`
 })
 
 function displayOnScreen(studentDetails){
@@ -49,11 +48,12 @@ function displayOnScreen(studentDetails){
         axios
             .delete(`https://crudcrud.com/api/f8a3094b48784547acb9d1535d3b794c/studentManager/${studentDetails._id}`)
         parent.remove();
+        totalNumber.innerHTML = `All students : ${--sum}`
     })
     let edit = document.createElement("button");
     edit.textContent = "Edit";
     edit.className = 'btn btn-success'
-    edit.addEventListener('click', ()=> {
+    edit.addEventListener('click', (e)=> {
         let parent = e.target.parentElement;
         let id = parent.id;
         axios
@@ -63,6 +63,7 @@ function displayOnScreen(studentDetails){
         form.name.value = arr[0];
         form.mobile.value = arr[1];
         form.address.value = arr[2];
+        totalNumber.innerHTML = `All students : ${--sum}`
     })
     li.appendChild(del);
     li.appendChild(edit);
